@@ -1,11 +1,14 @@
 package com.shardabootcamp.campusplacement.entity;
 
-import java.util.List;
+import java.util.Set;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 
 @Entity(name = "jobseeker")
 public class Jobseeker {
@@ -16,9 +19,14 @@ public class Jobseeker {
 	private String name;
 	private String email;
 	private String phone;
-	private List<Skills> jobSkills;
+	@ManyToMany
+	@JoinTable(
+	  name = "job-skills", 
+	  joinColumns = @JoinColumn(name="studentid"), 
+	  inverseJoinColumns = @JoinColumn(name = "skillid"))
+	private Set<Skills> jobSkills;
 	private String resume;
-	public Jobseeker(Long id, String name, String email, String phone, List<Skills> jobSkills, String resume) {
+	public Jobseeker(Long id, String name, String email, String phone, Set<Skills> jobSkills, String resume) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -30,6 +38,11 @@ public class Jobseeker {
 	public Jobseeker() {
 		super();
 		// TODO Auto-generated constructor stub
+	}
+	@Override
+	public String toString() {
+		return "Jobseeker [id=" + id + ", name=" + name + ", email=" + email + ", phone=" + phone + ", jobSkills="
+				+ jobSkills + ", resume=" + resume + "]";
 	}
 	public Long getId() {
 		return id;
@@ -55,10 +68,10 @@ public class Jobseeker {
 	public void setPhone(String phone) {
 		this.phone = phone;
 	}
-	public List<Skills> getJobSkills() {
+	public Set<Skills> getJobSkills() {
 		return jobSkills;
 	}
-	public void setJobSkills(List<Skills> jobSkills) {
+	public void setJobSkills(Set<Skills> jobSkills) {
 		this.jobSkills = jobSkills;
 	}
 	public String getResume() {
@@ -66,10 +79,5 @@ public class Jobseeker {
 	}
 	public void setResume(String resume) {
 		this.resume = resume;
-	}
-	@Override
-	public String toString() {
-		return "Jobseeker [id=" + id + ", name=" + name + ", email=" + email + ", phone=" + phone + ", jobSkills="
-				+ jobSkills + ", resume=" + resume + "]";
 	}
 }

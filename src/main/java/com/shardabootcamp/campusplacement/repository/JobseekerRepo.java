@@ -1,5 +1,9 @@
 package com.shardabootcamp.campusplacement.repository;
 
-public interface JobseekerRepo {
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.shardabootcamp.campusplacement.entity.Jobseeker;
+
+public interface JobseekerRepo extends JpaRepository<Jobseeker, Long>{
 
 }
