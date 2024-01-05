@@ -8,4 +8,8 @@ public interface JobseekerService {
 
 	List<Jobseeker> getAllJobseeker();
 
+	Jobseeker getJobseekerById(Long id);
+
+	Jobseeker registerJobseeker(Jobseeker jobseeker);
+
 }

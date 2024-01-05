@@ -1,7 +1,9 @@
 package com.shardabootcamp.campusplacement.entity;
 
+import java.util.HashSet;
 import java.util.Set;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -9,6 +11,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToOne;
 
 @Entity(name = "jobseeker")
 public class Jobseeker {
@@ -17,23 +20,22 @@ public class Jobseeker {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String name;
-	private String email;
-	private String phone;
-	@ManyToMany
+	
+	@ManyToMany(cascade=jakarta.persistence.CascadeType.ALL)
 	@JoinTable(
 	  name = "job-skills", 
 	  joinColumns = @JoinColumn(name="studentid"), 
 	  inverseJoinColumns = @JoinColumn(name = "skillid"))
-	private Set<Skills> jobSkills;
-	private String resume;
-	public Jobseeker(Long id, String name, String email, String phone, Set<Skills> jobSkills, String resume) {
+	private Set<Skills> jobSkills = new HashSet<Skills>();
+	
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name="details_id", referencedColumnName="id")
+	private JobseekerDetails details;
+	public Jobseeker(Long id, String name, Set<Skills> jobSkills) {
 		super();
 		this.id = id;
 		this.name = name;
-		this.email = email;
-		this.phone = phone;
 		this.jobSkills = jobSkills;
-		this.resume = resume;
 	}
 	public Jobseeker() {
 		super();
@@ -41,8 +43,7 @@ public class Jobseeker {
 	}
 	@Override
 	public String toString() {
-		return "Jobseeker [id=" + id + ", name=" + name + ", email=" + email + ", phone=" + phone + ", jobSkills="
-				+ jobSkills + ", resume=" + resume + "]";
+		return "Jobseeker [id=" + id + ", name=" + name + ", jobSkills=" + jobSkills + "]";
 	}
 	public Long getId() {
 		return id;
@@ -56,28 +57,11 @@ public class Jobseeker {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public String getEmail() {
-		return email;
-	}
-	public void setEmail(String email) {
-		this.email = email;
-	}
-	public String getPhone() {
-		return phone;
-	}
-	public void setPhone(String phone) {
-		this.phone = phone;
-	}
 	public Set<Skills> getJobSkills() {
 		return jobSkills;
 	}
 	public void setJobSkills(Set<Skills> jobSkills) {
 		this.jobSkills = jobSkills;
 	}
-	public String getResume() {
-		return resume;
-	}
-	public void setResume(String resume) {
-		this.resume = resume;
-	}
+	
 }
